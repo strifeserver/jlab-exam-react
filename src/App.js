@@ -9,39 +9,52 @@ import Header from './components/common/Header';
 import { validateToken } from "./components/common/ApiClient";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
-  const [UserInfo, setUserInfo] = useState({}); 
-  const [loading, setLoading] = useState(true); 
-  const [token, setToken] = useState(null); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [UserInfo, setUserInfo] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
+    // Check authentication status on component mount
     checkAuthenticationStatus();
-  }, [UserInfo]);
+  }, []);
+
+  useEffect(() => {
+    // Validate token whenever `token` changes
+    if (token) {
+      tokenValidate(token);
+    }
+  }, [token]);
 
   const checkAuthenticationStatus = () => {
     const storedToken = localStorage.getItem('token');
-    const isAuthenticated = !!storedToken; 
+    const isAuthenticated = !!storedToken;
     setIsLoggedIn(isAuthenticated);
     setToken(storedToken);
     setLoading(false);
-    tokenValidate(storedToken)
-
   };
 
   const tokenValidate = async (token) => {
     try {
-      const response = await validateToken();
-      setUserInfo({id: response.result.user.id, code: response.result.user.code, account_level: response.result.user.account_level, name: response.result.user.first_name, email: response.result.user.email, account_status: response.result.user.account_status})
+      const response = await validateToken(token);
+      const userData = {
+        id: response.result.user.id,
+        code: response.result.user.code,
+        account_level: response.result.user.account_level,
+        name: response.result.user.first_name,
+        email: response.result.user.email,
+        account_status: response.result.user.account_status
+      };
+      setUserInfo(userData);
     } catch (error) {
       console.error('Error during token validation:', error);
+      // Handle token validation error
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
-  
-  
   return (
     <Router>
           <Header isLoggedIn={isLoggedIn} setToken={setToken} setIsLoggedIn={setIsLoggedIn} > </Header>

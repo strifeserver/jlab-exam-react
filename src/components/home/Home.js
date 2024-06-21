@@ -15,19 +15,6 @@ function Home({ isLoggedIn, UserInfo }) {
     navigate('/update_profile');
   };
 
-  if (UserInfo.id !== undefined) {
-    console.log('UserInfo.id exists:', UserInfo.id);
-    
-    
-  } else {
-    const reloadPage = setTimeout(() => {
-      if(UserInfo.id !== undefined){
-        window.location.reload();
-        
-      }
-    }, 6000);
-    console.log('UserInfo.id does not exist');
-  }
 
   return (
     <div>
