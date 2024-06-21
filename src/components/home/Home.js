@@ -23,7 +23,7 @@ function Home({ isLoggedIn, UserInfo }) {
     const reloadPage = setTimeout(() => {
       if(UserInfo.id !== undefined){
         window.location.reload();
-
+        
       }
     }, 6000);
     console.log('UserInfo.id does not exist');
