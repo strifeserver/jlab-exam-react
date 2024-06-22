@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Row, Col, Button } from "react-bootstrap";
-
+import Swal from 'sweetalert2';
 function LoginForm({ onSubmit }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const handleSubmit = (event) => {
     event.preventDefault();
     onSubmit(email, password);
+    Swal.showLoading();
   };
+  Swal.close()
 
   return (
     <Form onSubmit={handleSubmit}>

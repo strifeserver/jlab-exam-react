@@ -1,13 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Row, Col, Button } from "react-bootstrap";
 import { validateToken } from "../common/ApiClient";
+import Swal from 'sweetalert2';
 function Home({ isLoggedIn, UserInfo }) {
   const navigate = useNavigate(); 
 
-  if (isLoggedIn == false) {
-    navigate("/login");
-  }
+
+
+  const storedToken = localStorage.getItem("token");
+
+  useEffect(() => {
+    if(!!!storedToken){
+      Swal.showLoading();
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+    }
+  }, [storedToken, isLoggedIn]); 
+
 
   const handleProfileUpdate = (event) => {
     event.preventDefault();
@@ -15,7 +26,7 @@ function Home({ isLoggedIn, UserInfo }) {
     navigate('/update_profile');
   };
 
-
+  Swal.close()
   return (
     <div>
       <h1>Welcome to the Home Page</h1>

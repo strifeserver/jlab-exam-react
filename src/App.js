@@ -13,7 +13,7 @@ function App() {
   const [UserInfo, setUserInfo] = useState({});
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
-
+  
   useEffect(() => {
     // Check authentication status on component mount
     checkAuthenticationStatus();
@@ -24,7 +24,7 @@ function App() {
     if (token) {
       tokenValidate(token);
     }
-  }, [token]);
+  }, [token, isLoggedIn]);
 
   const checkAuthenticationStatus = () => {
     const storedToken = localStorage.getItem('token');

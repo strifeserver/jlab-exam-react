@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Row, Col, Button } from "react-bootstrap";
-
+import Swal from 'sweetalert2';
 function RegistrationForm({ processRegister }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,6 +31,7 @@ function RegistrationForm({ processRegister }) {
       setErrors({});
       processRegister({ name, email, password, account_level });
     }
+    Swal.showLoading();
   };
 
   return (

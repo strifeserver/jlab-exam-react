@@ -1,15 +1,26 @@
+import React, { useEffect, useState } from 'react';
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 function Header({ isLoggedIn, setToken, setIsLoggedIn }) {
+  const navigate = useNavigate();
+  const storedToken = localStorage.getItem('token');
+  const [showLogout, setShowLogout] = useState(!!storedToken); 
+
   const handleLogout = () => {
-    // Clear token and logout logic
+    Swal.showLoading();
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     setToken(null);
+    navigate("/login");
   };
+
+  useEffect(() => {
+    console.log('isLoggedIn changed:', isLoggedIn);
+    setShowLogout(!!storedToken);
+  }, [storedToken]); 
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
@@ -20,8 +31,9 @@ function Header({ isLoggedIn, setToken, setIsLoggedIn }) {
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/registration">Register</Nav.Link>
-            {isLoggedIn ? (<Nav.Link onClick={handleLogout}>Logout</Nav.Link> ) : null}
-
+            {showLogout && (
+              <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
